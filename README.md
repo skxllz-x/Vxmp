@@ -7,7 +7,7 @@ A modern, single-page website with a logo/crest, interactive buttons, and music 
 ✨ **One-Page Website** - Clean, modern design
 🎵 **Music Player** - Play/pause button with icon in the top right
 🔗 **Interactive Buttons** - Discord and Roblox buttons with custom links
-🎨 **Custom Background** - Set your own background image
+🎨 **Custom Background** - Set your own background image (supports animated GIFs)
 📱 **Responsive Design** - Works on desktop, tablet, and mobile devices
 
 ## Quick Setup
@@ -16,7 +16,7 @@ A modern, single-page website with a logo/crest, interactive buttons, and music 
 
 Upload these files to your repository root:
 - `logo.png` - Your logo/crest image
-- `background.jpg` - Your background image
+- `background.gif` - Your background image (animated GIF supported)
 - `music.mp3` - Your background music
 
 ### 2. Edit script.js
@@ -28,8 +28,9 @@ const CONFIG = {
     discordLink: 'YOUR_DISCORD_INVITE_LINK',
     robloxLink: 'YOUR_ROBLOX_GAME_LINK',
     logoImage: 'logo.png',
-    backgroundImage: 'background.jpg',
-    musicFile: 'music.mp3'
+    backgroundImage: 'background.gif',
+    musicFile: 'music.mp3',
+    musicVolume: 0.6
 };
 ```
 
@@ -58,7 +59,7 @@ Vxmp/
 ├── style.css            # Styling ✅
 ├── script.js            # Functionality ✅
 ├── logo.png             # Your logo (ADD)
-├── background.jpg       # Your background (ADD)
+├── background.gif       # Your background (ADD)
 ├── music.mp3            # Your music (ADD)
 └── README.md            # This file ✅
 ```
@@ -120,7 +121,7 @@ Then add CSS in `style.css`:
 ## Supported Formats
 
 **Audio:** MP3, WAV, OGG, M4A
-**Images:** PNG, JPG, WebP
+**Images:** PNG, JPG, GIF, WebP
 
 ## Troubleshooting
 
@@ -132,12 +133,17 @@ Then add CSS in `style.css`:
 **Music not playing?**
 - Use supported audio format (MP3 recommended)
 - Check browser console (F12 → Console)
-- Some browsers need user interaction first
+- Some browsers need user interaction first; autoplay may be blocked
+- The player stores play state and volume in localStorage where available
 
 **Buttons not working?**
 - Verify links in script.js have `https://`
 - Check Discord invite link is complete
 - Test Roblox link in browser first
+
+**Animated GIFs considerations**
+- Animated GIFs can be large; optimize for web (tools like ezgif.com or converting to animated WebP)
+- If the GIF causes performance issues on mobile, provide a fallback static image and set it with JavaScript or CSS media queries
 
 **Icons not showing?**
 - Icons load from Font Awesome CDN
@@ -153,7 +159,7 @@ Then add CSS in `style.css`:
 ## Quick Checklist
 
 - [ ] Add `logo.png`
-- [ ] Add `background.jpg`
+- [ ] Add `background.gif`
 - [ ] Add `music.mp3`
 - [ ] Edit Discord link in `script.js`
 - [ ] Edit Roblox link in `script.js`
