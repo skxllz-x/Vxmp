@@ -37,7 +37,7 @@ audioPlayer.addEventListener('ended', function() {
 
 // Change these URLs to your custom links
 const CONFIG = {
-    discordLink: 'https://discord.com',      // Replace with your Discord server invite
+    discordLink: 'https://discord.gg/eY3U6YBM3Z',      // Replace with your Discord server invite
     robloxLink: 'https://www.roblox.com',    // Replace with your Roblox game link
     logoImage: 'logo.png',                   // Logo/crest image
     backgroundImage: 'background.jpg',       // Background image
