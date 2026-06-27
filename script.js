@@ -10,6 +10,11 @@ let isPlaying = false;
 // Example: 'music.mp3' or 'https://example.com/music.mp3'
 audioPlayer.src = 'music.mp3';
 
+// Handle audio loading errors
+audioPlayer.addEventListener('error', function() {
+    console.error('Error loading audio file. Check the file path in CONFIG.musicFile');
+});
+
 musicBtn.addEventListener('click', function() {
     if (isPlaying) {
         audioPlayer.pause();
@@ -17,7 +22,10 @@ musicBtn.addEventListener('click', function() {
         musicBtn.classList.remove('playing');
         isPlaying = false;
     } else {
-        audioPlayer.play();
+        // Allow autoplay
+        audioPlayer.play().catch(function(error) {
+            console.log('Autoplay prevented by browser. User gesture required.', error);
+        });
         musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
         musicBtn.classList.add('playing');
         isPlaying = true;
@@ -38,10 +46,10 @@ audioPlayer.addEventListener('ended', function() {
 // Change these URLs to your custom links
 const CONFIG = {
     discordLink: 'https://discord.gg/eY3U6YBM3Z',      // Replace with your Discord server invite
-    robloxLink: 'https://www.roblox.com',    // Replace with your Roblox game link
-    logoImage: 'logo.png',                   // Logo/crest image
-    backgroundImage: 'background.jpg',       // Background image
-    musicFile: 'music.mp3'                   // Music file path
+    robloxLink: 'https://www.roblox.com',              // Replace with your Roblox game link
+    logoImage: 'logo.png',                             // Logo/crest image
+    backgroundImage: 'background.gif',                 // Background image (.gif, .jpg, .png, .webp)
+    musicFile: 'music.mp3'                             // Music file path (.mp3, .wav, .ogg, .m4a)
 };
 
 // Apply configurations
@@ -50,6 +58,9 @@ document.getElementById('robloxBtn').href = CONFIG.robloxLink;
 document.getElementById('logo').src = CONFIG.logoImage;
 document.querySelector('.background').style.backgroundImage = `url('${CONFIG.backgroundImage}')`;
 audioPlayer.src = CONFIG.musicFile;
+
+// Preload audio
+audioPlayer.preload = 'metadata';
 
 // ==========================================
 // LOGO IMAGE UPLOAD (OPTIONAL)
