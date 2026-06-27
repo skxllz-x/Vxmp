@@ -40,7 +40,7 @@ const CONFIG = {
     discordLink: 'https://discord.gg/eY3U6YBM3Z',      // Replace with your Discord server invite
     robloxLink: 'https://www.roblox.com',    // Replace with your Roblox game link
     logoImage: 'logo.png',                   // Logo/crest image
-    backgroundImage: 'background.gif,       // Background image
+    backgroundImage: 'background.jpg',       // Background image
     musicFile: 'music.mp3'                   // Music file path
 };
 
