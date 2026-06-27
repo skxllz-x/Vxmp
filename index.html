@@ -1,45 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vxmp</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>New Boroughs NYC — Landing</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Background -->
-    <div class="background"></div>
+  <!-- BACKGROUND (uses src attribute) -->
+  <img class="bg" src="src/background.gif" alt="Background animation">
 
-    <!-- Music Control Button (Top Right) -->
-    <div class="music-control">
-        <button id="musicBtn" class="music-btn" title="Click to play/pause music">
-            <i class="fas fa-play"></i>
-        </button>
-        <audio id="audioPlayer" loop></audio>
+  <!-- Header with logo and game name (logo uses src) -->
+  <header>
+    <img class="logo" src="src/logo.png" alt="New Boroughs NYC logo">
+    <h1>New Boroughs NYC</h1>
+  </header>
+
+  <!-- Edit links button (opens login -> editor) -->
+  <button class="edit-links" id="openEditor">Edit Links</button>
+
+  <main class="container">
+    <div class="card">
+      <h2>Welcome to New Boroughs NYC</h2>
+      <p class="subtitle">Jump in — join the community or launch the Roblox game.</p>
+
+      <div class="btn-row" id="buttons">
+        <a id="discord1" class="btn" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 3H4C2.9 3 2 3.9 2 5v12c0 1.1.9 2 2 2h12l2-2h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8.5 13.5c-.8 0-1.5-.7-1.5-1.5S7.7 10.5 8.5 10.5 10 11.2 10 12s-.7 1.5-1.5 1.5zM15.5 13.5c-.8 0-1.5-.7-1.5-1.5S14.7 10.5 15.5 10.5 17 11.2 17 12s-.7 1.5-1.5 1.5z"/></svg>
+          </span>
+          <span class="label" id="discord1-label">Discord 1</span>
+        </a>
+
+        <a id="discord2" class="btn" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 3H4C2.9 3 2 3.9 2 5v12c0 1.1.9 2 2 2h12l2-2h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8.5 13.5c-.8 0-1.5-.7-1.5-1.5S7.7 10.5 8.5 10.5 10 11.2 10 12s-.7 1.5-1.5 1.5zM15.5 13.5c-.8 0-1.5-.7-1.5-1.5S14.7 10.5 15.5 10.5 17 11.2 17 12s-.7 1.5-1.5 1.5z"/></svg>
+          </span>
+          <span class="label" id="discord2-label">Discord 2</span>
+        </a>
+
+        <a id="roblox" class="btn roblox" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2l9 4v8l-9 5-9-5V6l9-4z"/></svg>
+          </span>
+          <span class="label" id="roblox-label">Play on Roblox</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- AUDIO element (uses src attribute) -->
+  <audio id="bg-audio" src="src/music.mp3" preload="metadata"></audio>
+
+  <!-- Bottom-right audio widget (play/pause + mute + volume + progress) -->
+  <div class="audio-widget" aria-label="Music player">
+    <button class="play" id="playBtn" aria-label="Play">►</button>
+    <button class="mute" id="muteBtn" aria-label="Mute">🔊</button>
+
+    <div class="progress-wrap">
+      <input id="progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Progress">
+      <div class="time">
+        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+      </div>
     </div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Logo/Crest -->
-        <div class="logo-section">
-            <img id="logo" src="logo.png" alt="Logo" class="logo">
-        </div>
-
-        <!-- Buttons Section -->
-        <div class="buttons-section">
-            <a href="https://discord.com" id="discordBtn" class="action-btn discord-btn" target="_blank">
-                <i class="fab fa-discord"></i>
-                <span>Join Discord</span>
-            </a>
-
-            <a href="https://www.roblox.com" id="robloxBtn" class="action-btn roblox-btn" target="_blank">
-                <i class="fab fa-roblox"></i>
-                <span>Play Game</span>
-            </a>
-        </div>
+    <div class="vol">
+      <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume">
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- Login modal (for admin) -->
+  <div class="modal" id="loginModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <h3>Admin login</h3>
+      <label for="admin-pass">Password</label>
+      <input id="admin-pass" type="password" placeholder="Enter admin password">
+      <div class="modal-row">
+        <button id="loginCancel" class="btn-ghost">Cancel</button>
+        <button id="loginOk" class="btn-primary">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Link edit panel (admin-only) -->
+  <div class="edit-panel" id="editPanel" role="dialog" aria-modal="true" aria-hidden="true">
+    <h3>Edit links</h3>
+    <label for="d1-label">Discord 1 label</label>
+    <input id="d1-label" type="text" placeholder="Discord 1">
+
+    <label for="d1-href">Discord 1 URL</label>
+    <input id="d1-href" type="text" placeholder="https://discord.gg/...">
+
+    <label for="d2-label">Discord 2 label</label>
+    <input id="d2-label" type="text" placeholder="Discord 2">
+
+    <label for="d2-href">Discord 2 URL</label>
+    <input id="d2-href" type="text" placeholder="https://discord.gg/...">
+
+    <label for="rb-label">Roblox button label</label>
+    <input id="rb-label" type="text" placeholder="Play on Roblox">
+
+    <label for="rb-href">Roblox URL</label>
+    <input id="rb-href" type="text" placeholder="https://www.roblox.com/games/...">
+
+    <div class="row">
+      <button id="cancelEdit" class="btn-ghost">Cancel</button>
+      <button id="saveEdit" class="btn-primary">Save</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
 </body>
 </html>

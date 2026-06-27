@@ -1,0 +1,95 @@
+/* Basic reset and layout */
+* {box-sizing: border-box; margin:0; padding:0}
+html,body {height:100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+.bg {
+  position:fixed; left:0; top:0; width:100%; height:100%; object-fit:cover; z-index:-1; filter:brightness(0.65);
+}
+
+/* Header */
+header {
+  position: absolute; top: 24px; left: 24px; display:flex; align-items:center; gap:12px;
+}
+.logo { width:84px; height:84px; object-fit:contain; }
+header h1 { font-size:28px; letter-spacing:1px; color:#fff; text-shadow:0 4px 18px rgba(0,0,0,0.6); }
+
+/* Container */
+.container {
+  min-height:100vh; display:flex; align-items:center; justify-content:center; color: #fff; text-align:center; padding:40px 20px;
+}
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.12));
+  padding:28px; border-radius:12px; box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  max-width:700px; width:100%; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.06);
+}
+.card h2 { font-size:20px; }
+.subtitle { opacity:0.9; margin-top:8px; }
+
+/* Buttons */
+.btn-row { margin-top:18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+a.btn {
+  display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:10px;
+  background: rgba(255,255,255,0.06); color: #fff; text-decoration:none; font-weight:600;
+  transition: transform .12s ease, background .12s; border: 1px solid rgba(255,255,255,0.06);
+}
+a.btn:hover { transform: translateY(-3px); background: rgba(255,255,255,0.09); }
+a.btn .icon { width:20px; height:20px; display:inline-block; flex: 0 0 20px; }
+a.roblox { background: linear-gradient(90deg,#ffcc00,#ff5a00); color:#111; }
+
+/* Edit button */
+.edit-links {
+  position:absolute; top:18px; right:18px; background:rgba(0,0,0,0.45); color:#fff;
+  border:1px solid rgba(255,255,255,0.06); padding:8px 10px; border-radius:8px; cursor:pointer; font-size:14px;
+}
+
+/* Audio widget */
+.audio-widget {
+  position:fixed; right:18px; bottom:18px; background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.45));
+  color:#fff; padding:10px 12px; border-radius:12px; display:flex; gap:10px; align-items:center;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.04); min-width:320px; z-index:40;
+}
+.audio-widget .play, .audio-widget .mute {
+  background:transparent; border:none; color: #fff; font-size:18px; cursor:pointer;
+  width:40px; height:40px; display:grid; place-items:center; border-radius:8px;
+}
+.audio-widget .play:hover, .audio-widget .mute:hover { background: rgba(255,255,255,0.04); }
+
+/* Progress */
+.progress-wrap { display:flex; flex-direction:column; gap:6px; width:160px; }
+#progress { width:100%; }
+.time { font-size:12px; opacity:0.9; display:flex; justify-content:space-between; }
+
+/* Volume */
+.vol input[type="range"] { width:90px; }
+
+/* Modals and panels */
+.modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); display:none; z-index:120; }
+.modal-card { background:#0b0b0b; color:#fff; border-radius:12px; padding:16px; width:300px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.06);
+}
+.modal-card h3 { margin-bottom:8px; }
+.modal-card label { font-size:13px; display:block; margin-top:10px; opacity:0.9; }
+.modal-card input { width:100%; padding:8px 10px; margin-top:6px; background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.04); color:#fff; border-radius:8px;
+}
+.modal-row { display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
+
+/* Edit panel */
+.edit-panel { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background: #0b0b0b;
+  color:#fff; border-radius:12px; padding:20px; width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.7);
+  border:1px solid rgba(255,255,255,0.06); z-index:100; display:none; gap:10px;
+}
+.edit-panel label { font-size:13px; display:block; margin-top:10px; opacity:0.9; }
+.edit-panel input[type="text"] { width:100%; padding:8px 10px; margin-top:6px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04); color:#fff; border-radius:8px; }
+.row { display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
+.btn-primary { background:#5865F2; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.btn-ghost { background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.06); padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+/* Responsive */
+@media (max-width:520px){
+  .card{ padding:18px; }
+  header h1 { font-size:18px }
+  header img.logo{ width:64px; height:64px }
+  .audio-widget { min-width:250px; right:8px; bottom:8px; padding:8px; gap:8px; }
+  .progress-wrap { width:120px; }
+  .vol input[type="range"]{ width:70px; }
+}
