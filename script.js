@@ -1,98 +1,106 @@
 // ==========================================
-// MUSIC CONTROL FUNCTIONALITY
+// MUSIC CONTROL & CONFIG (Improved)
 // ==========================================
 
-const musicBtn = document.getElementById('musicBtn');
-const audioPlayer = document.getElementById('audioPlayer');
-let isPlaying = false;
+// Load after DOM is ready to avoid null elements
+document.addEventListener('DOMContentLoaded', () => {
+    // =====================
+    // CONFIG
+    // =====================
+    const CONFIG = {
+        discordLink: 'https://discord.gg/eY3U6YBM3Z',      // Replace with your Discord server invite
+        robloxLink: 'https://www.roblox.com',              // Replace with your Roblox game link
+        logoImage: 'logo.png',                             // Logo/crest image
+        backgroundImage: 'background.gif',                 // Background image (.gif, .jpg, .png, .webp)
+        musicFile: 'music.mp3',                            // Music file path (.mp3, .wav, .ogg, .m4a)
+        musicVolume: 0.6                                   // Default volume (0.0 - 1.0)
+    };
 
-// Set your music file path here
-// Example: 'music.mp3' or 'https://example.com/music.mp3'
-audioPlayer.src = 'music.mp3';
+    // =====================
+    // ELEMENT REFERENCES
+    // =====================
+    const musicBtn = document.getElementById('musicBtn');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const bgEl = document.querySelector('.background');
+    const logoEl = document.getElementById('logo');
+    const discordBtn = document.getElementById('discordBtn');
+    const robloxBtn = document.getElementById('robloxBtn');
 
-// Handle audio loading errors
-audioPlayer.addEventListener('error', function() {
-    console.error('Error loading audio file. Check the file path in CONFIG.musicFile');
-});
+    // Apply basic config safely
+    if (discordBtn) discordBtn.href = CONFIG.discordLink;
+    if (robloxBtn) robloxBtn.href = CONFIG.robloxLink;
+    if (logoEl) logoEl.src = CONFIG.logoImage;
+    if (bgEl) bgEl.style.backgroundImage = `url('${CONFIG.backgroundImage}')`;
 
-musicBtn.addEventListener('click', function() {
-    if (isPlaying) {
-        audioPlayer.pause();
-        musicBtn.innerHTML = '<i class="fas fa-play"></i>';
-        musicBtn.classList.remove('playing');
-        isPlaying = false;
-    } else {
-        // Allow autoplay
-        audioPlayer.play().catch(function(error) {
-            console.log('Autoplay prevented by browser. User gesture required.', error);
-        });
-        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        musicBtn.classList.add('playing');
-        isPlaying = true;
+    // If audio element is missing, skip audio setup
+    if (!audioPlayer || !musicBtn) return;
+
+    // AUDIO SETUP
+    audioPlayer.src = CONFIG.musicFile;
+    audioPlayer.preload = 'metadata';
+    audioPlayer.loop = true;
+    audioPlayer.volume = typeof CONFIG.musicVolume === 'number' ? CONFIG.musicVolume : 0.6;
+
+    // State
+    let isPlaying = false;
+
+    // Helpers
+    function setButtonState(playing) {
+        if (!musicBtn) return;
+        isPlaying = !!playing;
+        musicBtn.classList.toggle('playing', isPlaying);
+        musicBtn.setAttribute('aria-pressed', String(isPlaying));
+        musicBtn.title = isPlaying ? 'Pause music' : 'Play music';
+        musicBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
     }
-});
 
-// Update button when audio ends
-audioPlayer.addEventListener('ended', function() {
-    musicBtn.innerHTML = '<i class="fas fa-play"></i>';
-    musicBtn.classList.remove('playing');
-    isPlaying = false;
-});
+    // Error handling
+    audioPlayer.addEventListener('error', function(e) {
+        console.error('Error loading audio file. Check CONFIG.musicFile and that the file exists and is a supported format.', e);
+    });
 
-// ==========================================
-// CUSTOM LINK CONFIGURATION
-// ==========================================
+    audioPlayer.addEventListener('ended', function() {
+        // If loop is false this will run; keep state consistent
+        setButtonState(false);
+        try { localStorage.setItem('vxmp_music_playing', '0'); } catch (e) { }
+    });
 
-// Change these URLs to your custom links
-const CONFIG = {
-    discordLink: 'https://discord.gg/eY3U6YBM3Z',      // Replace with your Discord server invite
-    robloxLink: 'https://www.roblox.com',              // Replace with your Roblox game link
-    logoImage: 'logo.png',                             // Logo/crest image
-    backgroundImage: 'background.gif',                 // Background image (.gif, .jpg, .png, .webp)
-    musicFile: 'music.mp3'                             // Music file path (.mp3, .wav, .ogg, .m4a)
-};
-
-// Apply configurations
-document.getElementById('discordBtn').href = CONFIG.discordLink;
-document.getElementById('robloxBtn').href = CONFIG.robloxLink;
-document.getElementById('logo').src = CONFIG.logoImage;
-document.querySelector('.background').style.backgroundImage = `url('${CONFIG.backgroundImage}')`;
-audioPlayer.src = CONFIG.musicFile;
-
-// Preload audio
-audioPlayer.preload = 'metadata';
-
-// ==========================================
-// LOGO IMAGE UPLOAD (OPTIONAL)
-// ==========================================
-
-// Uncomment this to enable drag-and-drop logo upload
-/*
-const logoElement = document.getElementById('logo');
-
-logoElement.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    logoElement.style.opacity = '0.7';
-});
-
-logoElement.addEventListener('dragleave', () => {
-    logoElement.style.opacity = '1';
-});
-
-logoElement.addEventListener('drop', (e) => {
-    e.preventDefault();
-    logoElement.style.opacity = '1';
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        const file = files[0];
-        if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                logoElement.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
+    // Toggle play/pause with user interaction
+    musicBtn.addEventListener('click', async function () {
+        if (isPlaying) {
+            audioPlayer.pause();
+            setButtonState(false);
+            try { localStorage.setItem('vxmp_music_playing', '0'); } catch (e) { }
+            return;
         }
+
+        try {
+            await audioPlayer.play();
+            setButtonState(true);
+            try { localStorage.setItem('vxmp_music_playing', '1'); } catch (e) { }
+        } catch (err) {
+            // Autoplay prevented by browser; user gesture required.
+            // We already are inside a user click so this should rarely happen, but keep the error visible.
+            console.warn('Playback failed or was prevented:', err);
+        }
+    });
+
+    // Restore last known play state (optional)
+    try {
+        const stored = localStorage.getItem('vxmp_music_playing');
+        if (stored === '1') {
+            // Try to start playback silently; if blocked we ignore
+            audioPlayer.play().then(() => setButtonState(true)).catch(() => setButtonState(false));
+        } else {
+            setButtonState(false);
+        }
+    } catch (e) {
+        // localStorage may be disabled; just set default button state
+        setButtonState(false);
     }
+
+    // Expose a small API (useful for debugging in console)
+    window.VXMP = window.VXMP || {};
+    window.VXMP.audio = audioPlayer;
+    window.VXMP.setBackground = (url) => { if (bgEl) bgEl.style.backgroundImage = `url('${url}')`; };
 });
-*/
